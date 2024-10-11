@@ -1,0 +1,31 @@
+buildscript {
+    ext.kotlin_version = '1.9.0'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.4.2'
+        classpath 'com.android.tools.build:gradle:8.0.2' // Android Gradle Plugin
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        // jcenter() // Optional but deprecated in the latest versions; try to avoid this if not necessary
+    }
+}
+
+rootProject.buildDir = '../build' // Set the build directory outside of the project to keep it clean
+
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.evaluationDependsOn(':app') // Ensure subprojects depend on the app module
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir // Task to clean the build directory
+}
